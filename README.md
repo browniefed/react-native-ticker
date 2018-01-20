@@ -17,4 +17,4 @@ import RotateText from "react-native-ticker";
 ```
 Supply a `textStyle`, as well as text.
 
-![](./example.gif)
+![](./examples.gif)
