@@ -104,10 +104,24 @@ class RotateText extends Component {
   }
 }
 
+// If we are first starting out then just render at 0 height
+// Else if we already know our height set to 0 so we can animate it into place
+const getHeight = (height) => height === 0 ? height : 0
+
 class TextRotator extends Component {
   state = {
-    animation: new Animated.Value(getPosition(this.props.text, this.props.height)),
+    animation: new Animated.Value(
+      getPosition(this.props.text, getHeight(this.props.height)),
+    ),
   };
+  componentDidMount() {
+    // If we first render then don't do a mounting animation
+    if (this.props.height !== 0) {
+      this.setState({
+        animation: new Animated.Value(getPosition(this.props.text, this.props.height)),
+      });
+    }
+  }
   componentWillReceiveProps(nextProps) {
     if (nextProps.height !== this.props.height) {
       this.setState({
