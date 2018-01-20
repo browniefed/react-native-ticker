@@ -106,16 +106,12 @@ class RotateText extends Component {
 
 class TextRotator extends Component {
   state = {
-    animation: new Animated.Value(
-      getPosition(this.props.text, this.props.height)
-    ),
+    animation: new Animated.Value(getPosition(this.props.text, this.props.height)),
   };
   componentWillReceiveProps(nextProps) {
     if (nextProps.height !== this.props.height) {
       this.setState({
-        animation: new Animated.Value(
-          getPosition(nextProps.text, nextProps.height)
-        ),
+        animation: new Animated.Value(getPosition(nextProps.text, nextProps.height)),
       });
     }
   }
