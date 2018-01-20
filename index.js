@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, Animated } from "react-native";
+import PropTypes from "prop-types";
 
 const styles = StyleSheet.create({
   row: {
@@ -41,6 +42,10 @@ const Piece = ({ children, style, textStyle }) => {
 };
 
 class RotateText extends Component {
+  static propTypes = {
+    text: PropTypes.string,
+    textStyle: PropTypes.number,
+  };
   state = {
     measured: false,
     height: 0,
@@ -106,6 +111,7 @@ class TextRotator extends Component {
       Animated.timing(this.state.animation, {
         toValue: getPosition(this.props.text, height),
         duration: 250,
+        useNativeDriver: true,
       }).start();
     }
   }
