@@ -13,8 +13,10 @@ npm install react-native-ticker
 ```js
 import RotateText from "react-native-ticker";
 
-<RotateText text={1235.44} textStyle={styles.text} />
+<RotateText text={1235.44} textStyle={styles.text} rotateTime={250}/>
 ```
-Supply a `textStyle`, as well as text.
+Supply a `textStyle`, as well as `text`.
+
+`rotateTime` is optional and defaults to `250ms`.
 
 ![](./examples.gif)

@@ -46,6 +46,9 @@ class RotateText extends Component {
     text: PropTypes.string,
     textStyle: PropTypes.number,
   };
+  static defaultPrpos = {
+    rotateTime: 250,
+  };
   state = {
     measured: false,
     height: 0,
@@ -65,7 +68,7 @@ class RotateText extends Component {
   };
 
   render() {
-    const { text, textStyle, style } = this.props;
+    const { text, textStyle, style, rotateTime } = this.props;
     const { height, measured } = this.state;
     const opacity = measured ? 1 : 0;
 
@@ -78,7 +81,15 @@ class RotateText extends Component {
                 {piece}
               </Piece>
             );
-          return <TextRotator key={i} text={piece} textStyle={textStyle} height={height} />;
+          return (
+            <TextRotator
+              duration={rotateTime}
+              key={i}
+              text={piece}
+              textStyle={textStyle}
+              height={height}
+            />
+          );
         })}
         <Text
           style={[textStyle, styles.hide]}
@@ -105,12 +116,12 @@ class TextRotator extends Component {
     }
   }
   componentDidUpdate(prevProps) {
-    const { height } = this.props;
+    const { height, duration } = this.props;
 
     if (prevProps.text !== this.props.text) {
       Animated.timing(this.state.animation, {
         toValue: getPosition(this.props.text, height),
-        duration: 250,
+        duration,
         useNativeDriver: true,
       }).start();
     }
