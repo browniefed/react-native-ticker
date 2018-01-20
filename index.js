@@ -71,14 +71,14 @@ class RotateText extends Component {
 
     return (
       <View style={[styles.row, { height, opacity }, style]}>
-        {splitText(text).map(piece => {
+        {splitText(text).map((piece, i) => {
           if (!isNumber(piece))
             return (
-              <Piece style={{ height }} textStyle={textStyle}>
+              <Piece key={i} style={{ height }} textStyle={textStyle}>
                 {piece}
               </Piece>
             );
-          return <TextRotator text={piece} textStyle={textStyle} height={height} />;
+          return <TextRotator key={i} text={piece} textStyle={textStyle} height={height} />;
         })}
         <Text
           style={[textStyle, styles.hide]}
