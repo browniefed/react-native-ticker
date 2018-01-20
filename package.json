@@ -1,6 +1,6 @@
 {
   "name": "react-native-ticker",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "React Native Number Ticker",
   "main": "index.js",
   "scripts": {
