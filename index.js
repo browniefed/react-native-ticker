@@ -44,10 +44,7 @@ const Piece = ({ children, style, textStyle }) => {
 class RotateText extends Component {
   static propTypes = {
     text: PropTypes.string,
-    textStyle: PropTypes.number,
-  };
-  static defaultPrpos = {
-    rotateTime: 250,
+    textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
   };
   state = {
     measured: false,
@@ -68,7 +65,7 @@ class RotateText extends Component {
   };
 
   render() {
-    const { text, textStyle, style, rotateTime } = this.props;
+    const { text, textStyle, style } = this.props;
     const { height, measured } = this.state;
     const opacity = measured ? 1 : 0;
 
@@ -83,7 +80,6 @@ class RotateText extends Component {
             );
           return (
             <TextRotator
-              duration={rotateTime}
               key={i}
               text={piece}
               textStyle={textStyle}
@@ -106,22 +102,26 @@ class RotateText extends Component {
 
 class TextRotator extends Component {
   state = {
-    animation: new Animated.Value(getPosition(this.props.text, this.props.height)),
+    animation: new Animated.Value(
+      getPosition(this.props.text, this.props.height)
+    ),
   };
   componentWillReceiveProps(nextProps) {
     if (nextProps.height !== this.props.height) {
       this.setState({
-        animation: new Animated.Value(getPosition(nextProps.text, nextProps.height)),
+        animation: new Animated.Value(
+          getPosition(nextProps.text, nextProps.height)
+        ),
       });
     }
   }
   componentDidUpdate(prevProps) {
-    const { height, duration } = this.props;
+    const { height } = this.props;
 
     if (prevProps.text !== this.props.text) {
       Animated.timing(this.state.animation, {
         toValue: getPosition(this.props.text, height),
-        duration,
+        duration: 250,
         useNativeDriver: true,
       }).start();
     }
