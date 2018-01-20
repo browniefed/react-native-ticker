@@ -44,9 +44,9 @@ const Piece = ({ children, style, textStyle }) => {
 class RotateText extends Component {
   static propTypes = {
     text: PropTypes.string,
-    textStyle: PropTypes.number,
+    textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
   };
-  static defaultPrpos = {
+  static defaultProps = {
     rotateTime: 250,
   };
   state = {
@@ -106,12 +106,16 @@ class RotateText extends Component {
 
 class TextRotator extends Component {
   state = {
-    animation: new Animated.Value(getPosition(this.props.text, this.props.height)),
+    animation: new Animated.Value(
+      getPosition(this.props.text, this.props.height)
+    ),
   };
   componentWillReceiveProps(nextProps) {
     if (nextProps.height !== this.props.height) {
       this.setState({
-        animation: new Animated.Value(getPosition(nextProps.text, nextProps.height)),
+        animation: new Animated.Value(
+          getPosition(nextProps.text, nextProps.height)
+        ),
       });
     }
   }
