@@ -13,9 +13,6 @@ const styles = StyleSheet.create({
     right: 0,
     opacity: 0,
   },
-  hideOverflow: {
-    overflow: "hidden",
-  },
 });
 
 const range = length => Array.from({ length }, (x, i) => i);
@@ -37,9 +34,7 @@ const getAnimationStyle = animation => {
 const Piece = ({ children, style, textStyle }) => {
   return (
     <View style={style}>
-      <Text style={textStyle} includeFontPadding={false}>
-        {children}
-      </Text>
+      <Text style={textStyle}>{children}</Text>
     </View>
   );
 };
@@ -94,12 +89,7 @@ class RotateText extends Component {
             />
           );
         })}
-        <Text
-          style={[textStyle, styles.hide]}
-          onLayout={this.handleMeasure}
-          pointerEvents="none"
-          includeFontPadding={false}
-        >
+        <Text style={[textStyle, styles.hide]} onLayout={this.handleMeasure} pointerEvents="none">
           0
         </Text>
       </View>
@@ -143,13 +133,13 @@ class TextRotator extends Component {
   }
 
   render() {
-    const { animation, height } = this.state;
-    const { textStyle } = this.props;
+    const { animation } = this.state;
+    const { textStyle, height } = this.props;
     return (
-      <View style={[{ height }, styles.hideOverflow]}>
+      <View style={{ height }}>
         <Animated.View style={getAnimationStyle(animation)}>
           {measureText.map(v => (
-            <Text key={v} style={textStyle} includeFontPadding={false}>
+            <Text key={v} style={textStyle}>
               {v}
             </Text>
           ))}
