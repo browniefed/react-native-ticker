@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
     right: 0,
     opacity: 0,
   },
+  hideOverflow: {
+    overflow: "hidden",
+  },
 });
 
 const range = length => Array.from({ length }, (x, i) => i);
@@ -44,7 +47,7 @@ const Piece = ({ children, style, textStyle }) => {
 class RotateText extends Component {
   static propTypes = {
     text: PropTypes.string,
-    textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object]),
+    textStyle: PropTypes.oneOfType([PropTypes.number, PropTypes.object, PropTypes.array]),
   };
   static defaultProps = {
     rotateTime: 250,
@@ -68,13 +71,13 @@ class RotateText extends Component {
   };
 
   render() {
-    const { text, textStyle, style, rotateTime } = this.props;
+    const { text, children, textStyle, style, rotateTime } = this.props;
     const { height, measured } = this.state;
     const opacity = measured ? 1 : 0;
 
     return (
       <View style={[styles.row, { height, opacity }, style]}>
-        {splitText(text).map((piece, i) => {
+        {splitText(text || children).map((piece, i) => {
           if (!isNumber(piece))
             return (
               <Piece key={i} style={{ height }} textStyle={textStyle}>
@@ -106,13 +109,11 @@ class RotateText extends Component {
 
 // If we are first starting out then just render at 0 height
 // Else if we already know our height set to 0 so we can animate it into place
-const getHeight = (height) => height === 0 ? height : 0
+const getHeight = height => (height === 0 ? height : 0);
 
 class TextRotator extends Component {
   state = {
-    animation: new Animated.Value(
-      getPosition(this.props.text, getHeight(this.props.height)),
-    ),
+    animation: new Animated.Value(getPosition(this.props.text, getHeight(this.props.height))),
   };
   componentDidMount() {
     // If we first render then don't do a mounting animation
@@ -145,7 +146,7 @@ class TextRotator extends Component {
     const { animation, height } = this.state;
     const { textStyle } = this.props;
     return (
-      <View style={{ height, overflow: "hidden" }}>
+      <View style={[{ height }, styles.hideOverflow]}>
         <Animated.View style={getAnimationStyle(animation)}>
           {measureText.map(v => (
             <Text key={v} style={textStyle} includeFontPadding={false}>
