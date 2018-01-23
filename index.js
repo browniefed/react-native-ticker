@@ -23,7 +23,7 @@ const getPosition = ({ text, items, height }) => {
 const splitText = (text = "") => (text + "").split("");
 const isNumber = (text = "") => !isNaN(parseInt(text, 10));
 const isString = (text = "") => typeof text === "string";
-const measureText = range(10).map(p => p + "");
+const numberRange = range(10).map(p => p + "");
 
 const getAnimationStyle = animation => {
   return {
@@ -85,7 +85,7 @@ class Ticker extends Component {
           textStyle,
           height,
           rotateTime,
-          rotateItems: measureText,
+          rotateItems: numberRange,
         })}
         <Text style={[textStyle, styles.hide]} onLayout={this.handleMeasure} pointerEvents="none">
           0
