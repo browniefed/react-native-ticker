@@ -97,7 +97,6 @@ class Ticker extends Component {
 
 const generalChildRenderer = ({ children, textStyle, height, rotateTime, rotateItems = [] }) => {
   return React.Children.map(children, (child, i) => {
-    debugger;
     if (isString(child)) {
       return (
         <Piece style={{ height }} textStyle={textStyle}>
