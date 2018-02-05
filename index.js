@@ -72,26 +72,46 @@ class Ticker extends Component {
   render() {
     const { text, children, textStyle, style, rotateTime } = this.props;
     const { height, measured } = this.state;
-    const opacity = measured ? 1 : 0;
 
     const childs = text || children;
 
-    const renderer = isString(childs) ? stringNumberRenderer : generalChildRenderer;
+    const rendererProps = {
+      children: childs,
+      textStyle,
+      height,
+      rotateTime,
+      rotateItems: numberRange,
+    };
 
-    return (
-      <View style={[styles.row, { height, opacity }, style]}>
-        {renderer({
-          children: childs,
-          textStyle,
-          height,
-          rotateTime,
-          rotateItems: numberRange,
-        })}
+    // For a simple string child we can display the text immediately, measure it, and replace it with the ticks
+    if (isString(childs)) {
+      const content = measured ? stringNumberRenderer(rendererProps) : (
+        <Text style={textStyle} onLayout={this.handleMeasure}>
+          {childs}
+        </Text>
+      );
+      const dynamicStyles = measured ? ({height}) : undefined;
+      return (
+        <View style={[styles.row,dynamicStyles,style]}>
+          {content}
+        </View>
+      );
+    }
+    // For more complex childs we need to measure the text height before being able to render
+    else {
+      const dynamicStyles = measured ? ({height}) : {opacity: 0};
+      const measureElement = (
         <Text style={[textStyle, styles.hide]} onLayout={this.handleMeasure} pointerEvents="none">
           0
         </Text>
-      </View>
-    );
+      );
+      return (
+        <View style={[styles.row, dynamicStyles, style]}>
+          {generalChildRenderer(rendererProps)}
+          {measureElement}
+        </View>
+      );
+    }
   }
 }
 
