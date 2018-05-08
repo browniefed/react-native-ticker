@@ -201,7 +201,7 @@ class Tick extends Component {
       <View style={{ height }}>
         <Animated.View style={getAnimationStyle(animation)}>
           {rotateItems.map(v => (
-            <Text key={v} style={textStyle}>
+            <Text key={v} style={[textStyle, { height }]}>
               {v}
             </Text>
           ))}
