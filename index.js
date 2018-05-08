@@ -35,10 +35,10 @@ const getAnimationStyle = animation => {
   };
 };
 
-const Piece = ({ children, style, textStyle }) => {
+const Piece = ({ children, style, height, textStyle }) => {
   return (
     <View style={style}>
-      <Text style={textStyle}>{children}</Text>
+      <Text style={[textStyle, { height }]}>{children}</Text>
     </View>
   );
 };
@@ -99,7 +99,7 @@ const generalChildRenderer = ({ children, textStyle, height, rotateTime, rotateI
   return React.Children.map(children, (child, i) => {
     if (isString(child)) {
       return (
-        <Piece style={{ height }} textStyle={textStyle}>
+        <Piece style={{ height }} height={height} textStyle={textStyle}>
           {child}
         </Piece>
       );
