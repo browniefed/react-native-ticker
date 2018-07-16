@@ -4,6 +4,8 @@ Create rotating animations.
 
 Can work with any number as well as other symbols like `$,.-`, etc.
 
+It is recommended to use a monospaced font, to avoid having chars of different with and weird visual effects ([see](https://stackoverflow.com/questions/38933459/react-native-how-to-set-fixed-width-to-individual-characters-number-letter))
+
 ```
 yarn add react-native-ticker
 npm install react-native-ticker
