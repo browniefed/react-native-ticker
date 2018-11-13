@@ -63,10 +63,12 @@ class Ticker extends Component {
     });
   }
   handleMeasure = e => {
-    this.setState({
-      measured: true,
-      height: e.nativeEvent.layout.height,
-    });
+    if(!this.state.measured) {
+      this.setState({
+        measured: true,
+        height: e.nativeEvent.layout.height,
+      });
+    }
   };
 
   render() {
