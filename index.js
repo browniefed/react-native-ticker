@@ -63,6 +63,7 @@ class Ticker extends Component {
     });
   }
   handleMeasure = e => {
+    e.persist();
     this.setState(state => {
       if(state.measured) {
         return null;
