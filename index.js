@@ -57,7 +57,7 @@ class Ticker extends Component {
     fontSize: StyleSheet.flatten(this.props.textStyle).fontSize,
   };
 
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     this.setState({
       fontSize: StyleSheet.flatten(nextProps.textStyle).fontSize,
     });
@@ -170,7 +170,7 @@ class Tick extends Component {
       });
     }
   }
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.height !== this.props.height) {
       this.setState({
         animation: new Animated.Value(
