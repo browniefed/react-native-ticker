@@ -159,28 +159,24 @@ class Tick extends Component {
   componentDidMount() {
     // If we first render then don't do a mounting animation
     if (this.props.height !== 0) {
-      this.setState({
-        animation: new Animated.Value(
-          getPosition({
-            text: this.props.text,
-            items: this.props.rotateItems,
-            height: this.props.height,
-          }),
-        ),
-      });
+      this.state.animation.setValue(
+        getPosition({
+          text: this.props.text,
+          items: this.props.rotateItems,
+          height: this.props.height,
+        })
+      );
     }
   }
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (nextProps.height !== this.props.height) {
-      this.setState({
-        animation: new Animated.Value(
-          getPosition({
-            text: nextProps.text,
-            items: nextProps.rotateItems,
-            height: nextProps.height,
-          }),
-        ),
-      });
+      this.state.animation.setValue(
+        getPosition({
+          text: nextProps.text,
+          items: nextProps.rotateItems,
+          height: nextProps.height,
+        })
+      );
     }
   }
   componentDidUpdate(prevProps) {
