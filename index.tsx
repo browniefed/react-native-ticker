@@ -118,8 +118,8 @@ const Ticker: React.FC<Props> = ({ duration, textStyle, children }) => {
 
   const measureMap = useRef<MeasureMap>({});
   const measureStrings: string[] = Children.map(children, child => {
-    if (typeof child === "string") {
-      return splitText(child);
+    if (typeof child === "string" || typeof child === "number") {
+      return splitText(`${child}`);
     } else {
       //@ts-ignore
       return child.props && child.props.rotateItems;
@@ -149,8 +149,8 @@ const Ticker: React.FC<Props> = ({ duration, textStyle, children }) => {
     <View style={styles.row}>
       {measured === true &&
         Children.map(children, child => {
-          if (typeof child === "string") {
-            return splitText(child).map((text, index) => {
+          if (typeof child === "string" || typeof child === "number") {
+            return splitText(`${child}`).map((text, index) => {
               let items = isNumber(text) ? numberItems : [text];
               return (
                 <TickItem
