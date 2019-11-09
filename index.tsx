@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, Children } from "react";
 import { StyleSheet, Text, View, TextStyle } from "react-native";
 import Animated, { Easing } from "react-native-reanimated";
 
@@ -25,6 +25,8 @@ const range = length => Array.from({ length }, (x, i) => i);
 const splitText = (text = "") => (text + "").split("");
 const numberRange = range(10).map(p => p + "");
 const numAdditional = [",", "."];
+const numberItems = [...numberRange, ...numAdditional];
+const isNumber = v => !isNaN(parseInt(v));
 
 const getPosition = ({ text, items, height }) => {
   const index = items.findIndex(p => p === text);
@@ -32,14 +34,14 @@ const getPosition = ({ text, items, height }) => {
 };
 
 interface Props {
-  text: string;
   duration?: number;
   textStyle: TextStyle;
   additionalDisplayItems?: string[];
+  children: React.ReactNode;
 }
 
 interface TickProps {
-  text: string;
+  children: string;
   duration: number;
   textStyle: TextStyle;
   rotateItems: string[];
@@ -48,17 +50,24 @@ interface TickProps {
 
 type MeasureMap = { [key: string]: { width: number; height: number } };
 
-const Tick: React.FC<TickProps> = ({
-  text,
+export const Tick: React.FC<{ children: string; rotateItems: string[] }> = ({
+  ...props
+}) => {
+  //@ts-ignore
+  return <TickItem {...props} />;
+};
+
+const TickItem: React.FC<TickProps> = ({
+  children,
   duration,
   textStyle,
   measureMap,
   rotateItems
 }) => {
-  const measurement = measureMap[text];
+  const measurement = measureMap[children];
 
   const position = getPosition({
-    text: text,
+    text: children,
     height: measurement.height,
     items: rotateItems
   });
@@ -104,22 +113,24 @@ const Tick: React.FC<TickProps> = ({
   );
 };
 
-const Ticker: React.FC<Props> = ({
-  text,
-  duration,
-  textStyle,
-  additionalDisplayItems
-}) => {
-  const split = splitText(text);
+const Ticker: React.FC<Props> = ({ duration, textStyle, children }) => {
   const [measured, setMeasured] = useState<boolean>(false);
 
-  const measurableItems = uniq([
-    ...numberRange,
-    ...numAdditional,
-    ...additionalDisplayItems
-  ]);
-
   const measureMap = useRef<MeasureMap>({});
+  const measureStrings: string[] = Children.map(children, child => {
+    if (typeof child === "string") {
+      return splitText(child);
+    } else {
+      //@ts-ignore
+      return child.props && child.props.rotateItems;
+    }
+  }).flat();
+
+  const hasNumbers = measureStrings.find(v => isNumber(v)) !== undefined;
+  const rotateItems = uniq([
+    ...(hasNumbers ? numberItems : []),
+    ...measureStrings
+  ]);
 
   const handleMeasure = (e, v: string) => {
     if (!measureMap.current) return;
@@ -129,7 +140,7 @@ const Ticker: React.FC<Props> = ({
       height: e.nativeEvent.layout.height
     };
 
-    if (Object.keys(measureMap.current).length === measurableItems.length) {
+    if (Object.keys(measureMap.current).length === rotateItems.length) {
       setMeasured(true);
     }
   };
@@ -137,19 +148,32 @@ const Ticker: React.FC<Props> = ({
   return (
     <View style={styles.row}>
       {measured === true &&
-        split.map((value, index) => {
-          return (
-            <Tick
-              key={index}
-              text={value}
-              duration={duration}
-              textStyle={textStyle}
-              rotateItems={measurableItems}
-              measureMap={measureMap.current}
-            />
-          );
+        Children.map(children, child => {
+          if (typeof child === "string") {
+            return splitText(child).map((text, index) => {
+              let items = isNumber(text) ? numberItems : [text];
+              return (
+                <TickItem
+                  key={index}
+                  duration={duration}
+                  textStyle={textStyle}
+                  rotateItems={items}
+                  measureMap={measureMap.current}
+                >
+                  {text}
+                </TickItem>
+              );
+            });
+          } else {
+            //@ts-ignore
+            return React.cloneElement(child, {
+              duration,
+              textStyle,
+              measureMap: measureMap.current
+            });
+          }
         })}
-      {measurableItems.map(v => {
+      {rotateItems.map(v => {
         return (
           <Text
             key={v}
@@ -165,7 +189,6 @@ const Ticker: React.FC<Props> = ({
 };
 
 Ticker.defaultProps = {
-  duration: 250,
-  additionalDisplayItems: []
+  duration: 250
 };
 export default Ticker;
