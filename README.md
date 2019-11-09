@@ -1,48 +1,35 @@
 # React Native Ticker
 
-Create rotating animations.
+Create rotating animations of any number, or character.
+Now it measures all widths and heights and adjusts accordingly!
 
-Can work with any number as well as other symbols like `$,.-`, etc.
-
-It is recommended to use a monospaced font, to avoid having chars of different with and weird visual effects ([see](https://stackoverflow.com/questions/38933459/react-native-how-to-set-fixed-width-to-individual-characters-number-letter))
+Rebuilt with `react-native-reanimated`.
 
 ```
 yarn add react-native-ticker
 npm install react-native-ticker
 ```
 
+As of V2 we only support the children prop now.
+
 ```js
 import Ticker from "react-native-ticker";
 
-// As a text prop
-<Ticker text={"1235.44"} textStyle={styles.text} rotateTime={250} />;
-
-// Or as a child
-<Ticker textStyle={styles.text} rotateTime={250}>
+<Ticker textStyle={styles.text} duration={250}>
   12345.44
-</Ticker>
-
+</Ticker>;
 ```
 
-Supply a `textStyle`, as well as `text`. `rotateTime` is optional and defaults to `250ms`.
-
+The `rotateTime` is now called `duration`.
+Supply a `textStyle`, and `duration` is optional and defaults to `250ms`.
 
 If you need more than just numbers you can build and supply your own rotations.
 
 ```js
-import Ticker, { Tick } from "react-native-ticker";
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#333",
-  },
-  text: {
-    fontSize: 40,
-    color: "#FFF",
-  },
-});
+import React, { useState, useEffect } from "react";
+import { View, StyleSheet } from "react-native";
+
+import Ticker, { Tick } from "./ticker2";
 
 function getRandom(min, max) {
   min = Math.ceil(min);
@@ -50,42 +37,50 @@ function getRandom(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
 const currencies = ["$", "¥", "€"];
 
-export default class App extends Component {
-  state = {
-    currency: "$",
-    value: "123",
-  };
+const App = () => {
+  const [state, setState] =
+    useState <
+    any >
+    {
+      currency: currencies[getRandom(0, 2)],
+      value: getRandom(0, 100000)
+    };
 
-  componentDidMount() {
+  useEffect(() => {
     setInterval(() => {
-      this.setState({
+      setState({
         currency: currencies[getRandom(0, 2)],
-        value: getRandom(0, 1000) + "",
+        value: getRandom(0, 100000)
       });
     }, 500);
-  }
+  }, []);
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Ticker textStyle={styles.text}>
-          <Tick rotateItems={currencies}>{this.state.currency}</Tick>
-          {this.state.value.split("").map((char, i) => {
-            return (
-              <Tick key={i} rotateItems={numbers}>
-                {char}
-              </Tick>
-            );
-          })}
-          !!!
-        </Ticker>
-      </View>
-    );
+  return (
+    <View style={styles.container}>
+      <Ticker textStyle={styles.text}>
+        <Tick rotateItems={currencies}>{state.currency}</Tick>
+        {state.value.toLocaleString()}
+      </Ticker>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#333"
+  },
+  text: {
+    fontSize: 40,
+    color: "#FFF"
   }
-}
+});
+
+export default App;
 ```
 
 You must render a `Ticker` and subsequently at least one `Tick`. If it is text then it will simply be rendered.
