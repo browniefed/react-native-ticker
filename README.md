@@ -1,16 +1,23 @@
 # React Native Ticker
 
 Create rotating animations of any number, or character.
-Now it measures all widths and heights and adjusts accordingly!
+
+# Changes from v2 to v3
 
 Rebuilt with `react-native-reanimated`.
+Rebuilt with TypeScript.
+The `rotateTime` is now called `duration`.
+Now it measures all widths and heights of items and adjusts accordingly!
+Supply a `children` element with the value, we no longer support `text` prop.
+
+# Install
 
 ```
 yarn add react-native-ticker
 npm install react-native-ticker
 ```
 
-As of V2 we only support the children prop now.
+As of V3 we only support the children prop now.
 
 ```js
 import Ticker from "react-native-ticker";
@@ -20,7 +27,6 @@ import Ticker from "react-native-ticker";
 </Ticker>;
 ```
 
-The `rotateTime` is now called `duration`.
 Supply a `textStyle`, and `duration` is optional and defaults to `250ms`.
 
 If you need more than just numbers you can build and supply your own rotations.
@@ -85,4 +91,4 @@ export default App;
 
 You must render a `Ticker` and subsequently at least one `Tick`. If it is text then it will simply be rendered.
 
-![](./examples.gif)
+![](./example.gif)
