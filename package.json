@@ -1,6 +1,6 @@
 {
   "name": "react-native-ticker",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "React Native Number Ticker",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,8 @@
     "url": "https://github.com/browniefed/react-native-ticker/issues"
   },
   "homepage": "https://github.com/browniefed/react-native-ticker#readme",
-  "devDependencies": {
-    "prop-types": "^15.6.0"
+  "devDependencies": {},
+  "dependencies": {
+    "react-native-reanimated": "^1.4.0"
   }
 }
