@@ -4,11 +4,11 @@ Create rotating animations of any number, or character.
 
 # Changes from v2 to v3
 
-Rebuilt with `react-native-reanimated`.
-Rebuilt with TypeScript.
-The `rotateTime` is now called `duration`.
-Now it measures all widths and heights of items and adjusts accordingly!
-Supply a `children` element with the value, we no longer support `text` prop.
+- Rebuilt with `react-native-reanimated`.
+- Rebuilt with TypeScript.
+- The `rotateTime` is now called `duration`.
+- Now it measures all widths and heights of items and adjusts accordingly!
+- Supply a `children` element with the value, we no longer support `text` prop.
 
 # Install
 

@@ -1,2 +1,4 @@
 node_modules
 .DS_STORE
+index.js
+index.d.ts

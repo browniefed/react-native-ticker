@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "isolatedModules": false,
+    "jsx": "react-native",
+    "lib": ["es6", "es2019"],
+    "moduleResolution": "node",
+    "strict": true,
+    "target": "esnext",
+    "declaration": true
+  },
+  "exclude": [
+    "e2e",
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js"
+  ]
+}
