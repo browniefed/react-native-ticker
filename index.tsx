@@ -105,7 +105,7 @@ const TickItem: React.FC<TickProps> = ({
         easing: Easing.linear
       }).start();
     }
-  }, [position]);
+  }, [position, measurement]);
 
   return (
     <Animated.View
