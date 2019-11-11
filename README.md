@@ -46,13 +46,10 @@ function getRandom(min, max) {
 const currencies = ["$", "¥", "€"];
 
 const App = () => {
-  const [state, setState] =
-    useState <
-    any >
-    {
+  const [state, setState] = useState <any>({
       currency: currencies[getRandom(0, 2)],
       value: getRandom(0, 100000)
-    };
+    });
 
   useEffect(() => {
     setInterval(() => {
