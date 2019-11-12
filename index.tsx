@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState, Children } from "react";
-import { StyleSheet, Text, View, TextStyle } from "react-native";
+import { StyleSheet, Text, View, TextStyle, TextProps } from "react-native";
 import Animated, { Easing } from "react-native-reanimated";
 
 const styles = StyleSheet.create({
@@ -43,7 +43,8 @@ const getPosition = ({
 
 interface Props {
   duration?: number;
-  textStyle: TextStyle;
+  textStyle?: TextStyle;
+  textProps?: TextProps;
   additionalDisplayItems?: string[];
   children: React.ReactNode;
 }
@@ -51,7 +52,8 @@ interface Props {
 interface TickProps {
   children: string;
   duration: number;
-  textStyle: TextStyle;
+  textStyle?: TextStyle;
+  textProps?: TextProps;
   rotateItems: string[];
   measureMap: MeasureMap;
 }
@@ -78,6 +80,7 @@ const TickItem: React.FC<TickProps> = ({
   children,
   duration,
   textStyle,
+  textProps,
   measureMap,
   rotateItems
 }) => {
@@ -121,7 +124,11 @@ const TickItem: React.FC<TickProps> = ({
         }}
       >
         {rotateItems.map(v => (
-          <Text key={v} style={[textStyle, { height: measurement.height }]}>
+          <Text
+            key={v}
+            {...textProps}
+            style={[textStyle, { height: measurement.height }]}
+          >
             {v}
           </Text>
         ))}
@@ -130,7 +137,12 @@ const TickItem: React.FC<TickProps> = ({
   );
 };
 
-const Ticker: React.FC<Props> = ({ duration = 250, textStyle, children }) => {
+const Ticker: React.FC<Props> = ({
+  duration = 250,
+  textStyle,
+  textProps,
+  children
+}) => {
   const [measured, setMeasured] = useState<boolean>(false);
 
   const measureMap = useRef<MeasureMap>({});
@@ -174,6 +186,7 @@ const Ticker: React.FC<Props> = ({ duration = 250, textStyle, children }) => {
                   key={index}
                   duration={duration}
                   textStyle={textStyle}
+                  textProps={textProps}
                   rotateItems={items}
                   measureMap={measureMap.current}
                 >
@@ -194,6 +207,7 @@ const Ticker: React.FC<Props> = ({ duration = 250, textStyle, children }) => {
         return (
           <Text
             key={v}
+            {...textProps}
             style={[textStyle, styles.hide]}
             onLayout={e => handleMeasure(e, v)}
           >
