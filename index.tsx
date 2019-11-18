@@ -5,14 +5,14 @@ import Animated, { Easing } from "react-native-reanimated";
 const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
-    overflow: "hidden"
+    overflow: "hidden",
   },
   hide: {
     position: "absolute",
     top: 0,
     left: 0,
-    opacity: 0
-  }
+    opacity: 0,
+  },
 });
 
 const uniq = (values: string[]) => {
@@ -31,7 +31,7 @@ const isNumber = (v: string) => !isNaN(parseInt(v));
 const getPosition = ({
   text,
   items,
-  height
+  height,
 }: {
   text: string;
   items: string[];
@@ -60,9 +60,7 @@ interface TickProps {
 
 type MeasureMap = { [key: string]: { width: number; height: number } };
 
-export const Tick: React.FC<{ children: string; rotateItems: string[] }> = ({
-  ...props
-}) => {
+export const Tick: React.FC<{ children: string; rotateItems: string[] }> = ({ ...props }) => {
   //@ts-ignore
   return <TickItem {...props} />;
 };
@@ -82,14 +80,14 @@ const TickItem: React.FC<TickProps> = ({
   textStyle,
   textProps,
   measureMap,
-  rotateItems
+  rotateItems,
 }) => {
   const measurement = measureMap[children];
 
   const position = getPosition({
     text: children,
     height: measurement.height,
-    items: rotateItems
+    items: rotateItems,
   });
 
   const widthAnim = useInitRef(() => new Animated.Value(measurement.width));
@@ -100,12 +98,12 @@ const TickItem: React.FC<TickProps> = ({
       Animated.timing(stylePos, {
         toValue: position,
         duration,
-        easing: Easing.linear
+        easing: Easing.linear,
       }).start();
       Animated.timing(widthAnim, {
         toValue: measurement.width,
         duration: 25,
-        easing: Easing.linear
+        easing: Easing.linear,
       }).start();
     }
   }, [position, measurement]);
@@ -115,20 +113,16 @@ const TickItem: React.FC<TickProps> = ({
       style={{
         height: measurement.height,
         width: widthAnim,
-        overflow: "hidden"
+        overflow: "hidden",
       }}
     >
       <Animated.View
         style={{
-          transform: [{ translateY: stylePos }]
+          transform: [{ translateY: stylePos }],
         }}
       >
         {rotateItems.map(v => (
-          <Text
-            key={v}
-            {...textProps}
-            style={[textStyle, { height: measurement.height }]}
-          >
+          <Text key={v} {...textProps} style={[textStyle, { height: measurement.height }]}>
             {v}
           </Text>
         ))}
@@ -137,12 +131,7 @@ const TickItem: React.FC<TickProps> = ({
   );
 };
 
-const Ticker: React.FC<Props> = ({
-  duration = 250,
-  textStyle,
-  textProps,
-  children
-}) => {
+const Ticker: React.FC<Props> = ({ duration = 250, textStyle, textProps, children }) => {
   const [measured, setMeasured] = useState<boolean>(false);
 
   const measureMap = useRef<MeasureMap>({});
@@ -156,17 +145,14 @@ const Ticker: React.FC<Props> = ({
   }).flat();
 
   const hasNumbers = measureStrings.find(v => isNumber(v)) !== undefined;
-  const rotateItems = uniq([
-    ...(hasNumbers ? numberItems : []),
-    ...measureStrings
-  ]);
+  const rotateItems = uniq([...(hasNumbers ? numberItems : []), ...measureStrings]);
 
   const handleMeasure = (e: any, v: string) => {
     if (!measureMap.current) return;
 
     measureMap.current[v] = {
       width: e.nativeEvent.layout.width,
-      height: e.nativeEvent.layout.height
+      height: e.nativeEvent.layout.height,
     };
 
     if (Object.keys(measureMap.current).length === rotateItems.length) {
@@ -199,7 +185,8 @@ const Ticker: React.FC<Props> = ({
             return React.cloneElement(child, {
               duration,
               textStyle,
-              measureMap: measureMap.current
+              textProps,
+              measureMap: measureMap.current,
             });
           }
         })}
@@ -220,6 +207,6 @@ const Ticker: React.FC<Props> = ({
 };
 
 Ticker.defaultProps = {
-  duration: 250
+  duration: 250,
 };
 export default Ticker;
