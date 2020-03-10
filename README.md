@@ -17,6 +17,13 @@ yarn add react-native-ticker
 npm install react-native-ticker
 ```
 
+Install react-native-reanimated.
+
+```
+yarn add react-native-reanimated
+npm install react-native-reanimated
+```
+
 As of V3 we only support the children prop now.
 
 ```js
