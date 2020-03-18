@@ -142,7 +142,7 @@ const Ticker: React.FC<Props> = ({ duration = 250, textStyle, textProps, childre
       //@ts-ignore
       return child.props && child.props.rotateItems;
     }
-  }).flat();
+  }).reduce((acc, val) => acc.concat(val), []);
 
   const hasNumbers = measureStrings.find(v => isNumber(v)) !== undefined;
   const rotateItems = uniq([...(hasNumbers ? numberItems : []), ...measureStrings]);
