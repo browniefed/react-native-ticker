@@ -1,14 +1,28 @@
 {
   "compilerOptions": {
+    "allowJs": false,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "isolatedModules": false,
     "jsx": "react-native",
-    "lib": ["es6", "es2019"],
+    "lib": [
+      "es6",
+      "es2015",
+      "dom",
+      "es2015.iterable"
+    ],
+    "types": [
+      "reflect-metadata"
+    ],
     "moduleResolution": "node",
-    "strict": true,
-    "target": "esnext",
-    "declaration": true
+    "target": "es6",
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "experimentalDecorators": true,
+    "preserveConstEnums": false,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "skipLibCheck": true,
+    "emitDecoratorMetadata": true
   },
   "exclude": [
     "e2e",
