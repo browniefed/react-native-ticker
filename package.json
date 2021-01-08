@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "prepublishOnly": "yarn build",
-    "build": "tsc"
+    "build": "tsc",
+    "postinstall": "yarn build"
   },
   "author": "Jason Brown (browniefed)",
   "license": "MIT",
