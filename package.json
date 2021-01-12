@@ -27,6 +27,7 @@
   "devDependencies": {
     "@types/react": "^16.9.11",
     "@types/react-native": "^0.60.22",
+    "@types/reflect-metadata": "^0.1.0",
     "typescript": "^3.7.2"
   },
   "peerDependencies": {
