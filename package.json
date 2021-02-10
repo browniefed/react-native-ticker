@@ -6,7 +6,7 @@
   "scripts": {
     "prepublishOnly": "yarn build",
     "build": "tsc",
-    "postinstall": "yarn build"
+    "prepare": "yarn build"
   },
   "author": "Jason Brown (browniefed)",
   "license": "MIT",
