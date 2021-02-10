@@ -83,7 +83,9 @@ const TickItem: React.FC<TickProps> = ({
   rotateItems,
 }) => {
   const measurement = measureMap[children];
-
+  if(!measurement || !measurement.height || !measurement.width) {
+    return null;
+  }
   const position = getPosition({
     text: children,
     height: measurement.height,
@@ -135,7 +137,7 @@ const Ticker: React.FC<Props> = ({ duration = 250, textStyle, textProps, childre
   const [measured, setMeasured] = useState<boolean>(false);
 
   const measureMap = useRef<MeasureMap>({});
-  const measureStrings: string[] = Children.map(children, child => {
+  const measureStrings: string[] = Children?.map(children, child => {
     if (typeof child === "string" || typeof child === "number") {
       return splitText(`${child}`);
     } else {
