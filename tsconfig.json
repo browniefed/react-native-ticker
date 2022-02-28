@@ -6,7 +6,7 @@
     "lib": ["es6", "es2015", "dom", "es2015.iterable"],
     "moduleResolution": "node",
     "target": "es6",
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noUnusedLocals": true,
     "noImplicitReturns": true,
     "experimentalDecorators": true,
