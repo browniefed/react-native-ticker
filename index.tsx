@@ -67,7 +67,8 @@ interface TickProps {
 
 type MeasureMap = Record<string, { width: number; height: number }>;
 
-export const Tick = ({ ...props }: TickProps) => {
+export const Tick = ({ ...props }: Partial<TickProps>) => {
+  //@ts-ignore
   return <TickItem {...props} />;
 };
 
