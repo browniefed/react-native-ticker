@@ -3,6 +3,7 @@ import {
   StyleSheet,
   Text,
   View,
+  ViewStyle,
   TextStyle,
   TextProps,
   I18nManager,
@@ -50,6 +51,7 @@ const getPosition = ({
 
 interface Props {
   duration?: number;
+  containerStyle?: ViewStyle;
   textStyle?: TextStyle;
   textProps?: TextProps;
   additionalDisplayItems?: string[];
@@ -146,7 +148,7 @@ const TickItem = ({
   );
 };
 
-const Ticker = ({ duration = 250, textStyle, textProps, children }: Props) => {
+const Ticker = ({ duration = 250, containerStyle, textStyle, textProps, children }: Props) => {
   const [measured, setMeasured] = useState<boolean>(false);
 
   const measureMap = useRef<MeasureMap>({});
@@ -178,7 +180,7 @@ const Ticker = ({ duration = 250, textStyle, textProps, children }: Props) => {
   };
 
   return (
-    <View style={styles.row}>
+    <View style={[styles.row, containerStyle]}>
       {measured === true &&
         Children.map(children, (child) => {
           if (typeof child === "string" || typeof child === "number") {
