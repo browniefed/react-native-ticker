@@ -8,7 +8,12 @@ import {
   TextProps,
   I18nManager,
 } from "react-native";
-import Animated, { EasingNode } from "react-native-reanimated";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  Easing,
+} from "react-native-reanimated";
 
 const styles = StyleSheet.create({
   row: {
@@ -74,15 +79,6 @@ export const Tick = ({ ...props }: Partial<TickProps>) => {
   return <TickItem {...props} />;
 };
 
-const useInitRef = (cb: () => Animated.Value<number>) => {
-  const ref = useRef<Animated.Value<number>>();
-  if (!ref.current) {
-    ref.current = cb();
-  }
-
-  return ref.current;
-};
-
 const TickItem = ({
   children,
   duration,
@@ -92,58 +88,44 @@ const TickItem = ({
   rotateItems,
 }: TickProps) => {
   const measurement = measureMap[children];
-
   const position = getPosition({
     text: children,
     height: measurement.height,
     items: rotateItems,
   });
 
-  const widthAnim = useInitRef(() => new Animated.Value(measurement.width));
-  const stylePos = useInitRef(() => new Animated.Value(position));
+  const widthAnim = useSharedValue(measurement.width);
+  const stylePos = useSharedValue(position);
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    height: measurement.height,
+    width: widthAnim.value,
+    overflow: 'hidden',
+    transform: [{ translateY: stylePos.value }],
+  }));
 
   useEffect(() => {
-    if (stylePos) {
-      Animated.timing(stylePos, {
-        toValue: position,
-        duration,
-        easing: EasingNode.linear,
-      }).start();
-      Animated.timing(widthAnim, {
-        toValue: measurement.width,
-        duration: 25,
-        easing: EasingNode.linear,
-      }).start();
-    }
-  }, [position, measurement]);
+    stylePos.value = withTiming(position, {
+      duration: duration,
+      easing: Easing.linear,
+    });
+    widthAnim.value = withTiming(measurement.width, {
+      duration: 25,
+      easing: Easing.linear,
+    });
+  }, [position, measurement, duration]);
 
   return (
-    <Animated.View
-      style={[
-        {
-          height: measurement.height,
-          width: widthAnim,
-          overflow: "hidden",
-        },
-      ]}
-    >
-      <Animated.View
-        style={[
-          {
-            transform: [{ translateY: stylePos }],
-          },
-        ]}
-      >
-        {rotateItems.map((v) => (
-          <Text
-            key={v}
-            {...textProps}
-            style={[textStyle, { height: measurement.height }]}
-          >
-            {v}
-          </Text>
-        ))}
-      </Animated.View>
+    <Animated.View style={animatedStyles}>
+      {rotateItems.map((v) => (
+        <Text
+          key={v}
+          {...textProps}
+          style={[textStyle, { height: measurement.height }]}
+        >
+          {v}
+        </Text>
+      ))}
     </Animated.View>
   );
 };
